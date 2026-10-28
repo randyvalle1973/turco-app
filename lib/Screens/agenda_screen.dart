@@ -18,6 +18,71 @@ class AgendaScreen extends StatefulWidget {
 class _AgendaScreenState extends State<AgendaScreen> {
   late final AgendaViewModel _viewModel;
 
+  void mostrarSelectorTema(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return ValueListenableBuilder<ThemeMode>(
+          valueListenable: ThemeController.mode,
+          builder: (context, mode, child) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Apariencia',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ListTile(
+                      leading: const Icon(Icons.settings_brightness),
+                      title: const Text('Sistema'),
+                      trailing: mode == ThemeMode.system
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        ThemeController.setMode(ThemeMode.system);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.light_mode),
+                      title: const Text('Claro'),
+                      trailing: mode == ThemeMode.light
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        ThemeController.setMode(ThemeMode.light);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.dark_mode),
+                      title: const Text('Oscuro'),
+                      trailing: mode == ThemeMode.dark
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        ThemeController.setMode(ThemeMode.dark);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +90,15 @@ class _AgendaScreenState extends State<AgendaScreen> {
     _viewModel.cargarTurnos();
 
     if (widget.estilistaId != null) {
+      _viewModel.seleccionarEstilista(widget.estilistaId);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AgendaScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.estilistaId != widget.estilistaId) {
       _viewModel.seleccionarEstilista(widget.estilistaId);
     }
   }
@@ -218,12 +292,8 @@ class _AgendaScreenState extends State<AgendaScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: ThemeController.toggle,
-            icon: Icon(
-              ThemeController.mode.value == ThemeMode.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
+            onPressed: () => mostrarSelectorTema(context),
+            icon: const Icon(Icons.brightness_6_outlined),
             tooltip: 'Cambiar tema',
           ),
           IconButton(
@@ -738,6 +808,70 @@ class _ResumenCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void mostrarSelectorTema(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ValueListenableBuilder<ThemeMode>(
+          valueListenable: ThemeController.mode,
+          builder: (context, mode, child) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Apariencia',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ListTile(
+                      leading: const Icon(Icons.settings_brightness),
+                      title: const Text('Sistema'),
+                      trailing: mode == ThemeMode.system
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        ThemeController.setMode(ThemeMode.system);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.light_mode),
+                      title: const Text('Claro'),
+                      trailing: mode == ThemeMode.light
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        ThemeController.setMode(ThemeMode.light);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.dark_mode),
+                      title: const Text('Oscuro'),
+                      trailing: mode == ThemeMode.dark
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        ThemeController.setMode(ThemeMode.dark);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

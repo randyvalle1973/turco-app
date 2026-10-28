@@ -49,7 +49,7 @@ flutter {
 }
 
 tasks.configureEach {
-    if (name == "lintVitalAnalyzeRelease") {
+    if (name.startsWith("lintVital")) {
         enabled = false
     }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/datos_prueba.dart';
-import '../models/estilista.dart';
 import '../models/servicio.dart';
 import '../models/turno.dart';
 

@@ -81,8 +81,8 @@ class AgendaViewModel extends ChangeNotifier {
   double get ingresosEstimados {
     var total = 0.0;
 
-    for (final turno in turnosDelDia) {
-      if (turno.estado == EstadoTurno.cancelado) {
+    for (final turno in _turnos) {
+      if (turno.estado != EstadoTurno.completado) {
         continue;
       }
 
